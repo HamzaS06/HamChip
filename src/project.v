@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module tt_um_example (
+module tt_um_hamzas06_counter  (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -16,12 +16,44 @@ module tt_um_example (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+  // Control inputs:
+    // ui_in[0] = load
+    // ui_in[1] = output enable
+    wire load;
+    wire output_enable;
 
-  // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
+    assign load          = ui_in[0];
+    assign output_enable = ui_in[1];
+
+    // Eight flip-flops store a number from 0 to 255.
+    reg [7:0] count;
+
+    // Asynchronous active-low reset.
+    // Loading and counting happen on rising clock edges.
+    // Priority: reset > load > count.
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n)
+            count <= 8'd0;
+        else if (load)
+            count <= uio_in;
+        else
+            count <= count + 8'd1;
+    end
+
+    // Counter data goes to the bidirectional output drivers.
+    assign uio_out = count;
+
+    // Enable all eight output drivers together.
+    // 1: drive the count onto the pins.
+    // 0: release the pins into high impedance.
+    assign uio_oe = {8{output_enable}};
+
+    // Dedicated output pins are unused.
+    assign uo_out = 8'b0;
+
+    // Mark unused inputs for the lint tools.
+    wire _unused = &{ena, ui_in[7:2], 1'b0};
 
 endmodule
+
+`default_nettype wire
