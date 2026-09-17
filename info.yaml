@@ -1,17 +1,17 @@
 # Tiny Tapeout project information
 project:
-  title:        "TEST"      # Project title
+  title:        "8-bit Programmable Counter"      # Project title
   author:       "Muhammad Hamza Soofi"      # Your name
   discord:      "yaboihazmat"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "i dont know yet"      # One line description of what your project does
+  description:  "8-bit up counter with asynchronous reset, synchronous load, and tri-state outputs."      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
-  clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
+  clock_hz:     100000       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 340x160 uM.
   tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 3x4 or 4x4
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_example"
+  top_module:  "tt_um_hamzas06_counter"
 
   # List your project's source files here.
   # Source files must be in ./src and you must list each source file separately, one per line.
@@ -23,8 +23,8 @@ project:
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
   # Inputs
-  ui[0]: "in_0"
-  ui[1]: "in_1"
+  ui[0]: "LOAD: high loads data on the rising clock edge"
+  ui[1]: "OUTPUT_ENABLE: high drives the data bus"
   ui[2]: "in_2"
   ui[3]: "in_3"
   ui[4]: "in_4"
@@ -43,14 +43,14 @@ pinout:
   uo[7]: "out_7"
 
   # Bidirectional pins
-  uio[0]: "io_0"
-  uio[1]: "io_1"
-  uio[2]: "io_2"
-  uio[3]: "io_3"
-  uio[4]: "io_4"
-  uio[5]: "io_5"
-  uio[6]: "io_6"
-  uio[7]: "io_7"
+  uio[0]: "DATA[0]"
+  uio[1]: "DATA[1]"
+  uio[2]: "DATA[2]"
+  uio[3]: "DATA[3]"
+  uio[4]: "DATA[4]"
+  uio[5]: "DATA[5]"
+  uio[6]: "DATA[6]"
+  uio[7]: "DATA[7]"
 
 # Do not change!
 yaml_version: 6
